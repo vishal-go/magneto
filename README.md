@@ -2,7 +2,7 @@
 
 Obsidian GitHub Sync Plugin
 
-[![GitHub release](https://img.shields.io/github/v/release/vishal-go/obsidian-magneto)](https://github.com/vishal-go/obsidian-magneto/releases)
+[![GitHub release](https://img.shields.io/github/v/release/vishal-go/magneto)](https://github.com/vishal-go/obsidian-magneto/releases)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 Sync your Obsidian vault to a GitHub repository. **Works on both mobile and desktop** without requiring Git to be installed locally.
