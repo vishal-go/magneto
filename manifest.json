@@ -1,9 +1,9 @@
 {
 	"id": "magneto",
-	"name": "MAGNETO",
+	"name": "magneto",
 	"version": "1.0.0",
 	"minAppVersion": "0.15.0",
-	"description": "MAGNETO — Markdown And Git Notes Export, Track Origin. Sync your vault to GitHub (mobile + desktop, no Git required).",
+	"description": "magneto — Markdown And Git Notes Export, Track Origin. Sync your vault to GitHub (mobile + desktop, no Git required).",
 	"author": "Vishal Sharma",
 	"authorUrl": "https://github.com/vishal-go",
 	"isDesktopOnly": false
