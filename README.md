@@ -1,6 +1,8 @@
-# GitSync - Obsidian GitHub Sync Plugin
+# MAGNETO — Markdown And Git Notes Export, Track Origin
 
-[![GitHub release](https://img.shields.io/github/v/release/vishal-go/obsidian-gitsync)](https://github.com/vishal-go/obsidian-gitsync/releases)
+Obsidian GitHub Sync Plugin
+
+[![GitHub release](https://img.shields.io/github/v/release/vishal-go/obsidian-magneto)](https://github.com/vishal-go/obsidian-magneto/releases)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 Sync your Obsidian vault to a GitHub repository. **Works on both mobile and desktop** without requiring Git to be installed locally.
@@ -12,7 +14,7 @@ Sync your Obsidian vault to a GitHub repository. **Works on both mobile and desk
 - ⬇️ **Pull from GitHub**: Download all files from your repository
 - ⏰ **Auto Sync**: Optionally sync at regular intervals (5-120 minutes)
 - 📱 **Mobile Compatible**: Uses GitHub REST API, no Git installation needed
-- 🔒 **Private Repos**: Automatically creates a private repository if it doesn't exist
+- 🔒 **Private Repos**: Works with private repositories (auto-create is possible when your token allows it)
 - 📁 **Exclusions**: Configure folders and files to exclude from sync
 - 🖼️ **Binary Files**: Supports images, PDFs, and other binary files
 
@@ -22,43 +24,80 @@ Sync your Obsidian vault to a GitHub repository. **Works on both mobile and desk
 
 1. Open **Settings → Community plugins**
 2. Disable **Restricted mode**
-3. Click **Browse** and search for "GitSync"
+3. Click **Browse** and search for "MAGNETO"
 4. Click **Install**, then **Enable**
 
 ### Manual Installation
 
-1. Download `main.js`, `manifest.json`, and `styles.css` from the [latest release](https://github.com/vishal-go/obsidian-gitsync/releases)
-2. Create folder: `<YourVault>/.obsidian/plugins/gitsync/`
+1. Download `main.js`, `manifest.json`, and `styles.css` from the [latest release](https://github.com/vishal-go/obsidian-magneto/releases)
+2. Create folder: `<YourVault>/.obsidian/plugins/magneto/`
 3. Copy the downloaded files into the folder
 4. Reload Obsidian and enable the plugin
 
+Note: the folder name stays `magneto` because the plugin id is still `magneto`.
+
 ## Setup
 
-### 1. Create a GitHub Personal Access Token
+MAGNETO works with either:
 
-1. Go to [GitHub Settings → Developer Settings → Personal Access Tokens](https://github.com/settings/tokens)
-2. Click **Generate new token (classic)**
-3. Give it a descriptive name (e.g., "Obsidian GitSync")
-4. Select the `repo` scope (full control of private repositories)
-5. Click **Generate token**
-6. **Copy the token immediately** - you won't be able to see it again!
+- **Recommended (most secure):** a **private repo** + a **fine-grained PAT** restricted to that single repo
+- **Alternative (easiest / auto-create repo):** a **classic PAT** with broad `repo` scope
 
-### 2. Configure the Plugin
+### Recommended setup (private repo + restricted token)
 
-1. Open Obsidian Settings
-2. Go to **Community plugins → GitSync**
-3. Enter your GitHub username
-4. Paste your Personal Access Token
-5. Enter a repository name (e.g., `obsidian-vault`)
-6. Click **Test Connection** to verify your credentials
+#### 1) Create a private GitHub repository
 
-### 3. Start Syncing
+You must create the repo first (fine-grained tokens can only be restricted to repos that already exist).
 
-- Use the **ribbon icon** (git branch icon) for quick sync
+1. Go to https://github.com/new
+2. Create a **Private** repository (example: `obsidian-vault`)
+3. Optional (recommended): check **Add a README** so GitHub initializes the default branch (usually `main`)
+
+#### 2) Generate a fine-grained token (restricted to that repo)
+
+1. GitHub → **Settings** → **Developer settings**
+2. **Personal access tokens** → **Fine-grained tokens**
+3. Click **Generate new token**
+4. Configure:
+  - **Token name**: `Obsidian MAGNETO (restricted)`
+  - **Expiration**: set a reasonable expiry
+  - **Resource owner**: the account/org that owns the repo
+5. Under **Repository access**:
+  - Select **Only select repositories**
+  - Choose your repo (example: `obsidian-vault`)
+6. Under **Repository permissions**, set:
+  - **Contents**: **Read and write**
+  - **Metadata**: **Read-only**
+7. Click **Generate token** and copy it immediately
+
+#### 3) Configure MAGNETO in Obsidian
+
+1. Obsidian → **Settings** → **Community plugins** → **MAGNETO**
+2. Set:
+  - **GitHub username**: your GitHub username
+  - **Personal access token**: paste the fine-grained token
+  - **Repository name**: repo name only (example: `obsidian-vault`, not `owner/obsidian-vault`)
+  - **Branch**: usually `main`
+3. Click **Test connection**
+
+### Alternative setup (classic PAT with `repo` scope)
+
+Use this if you want MAGNETO to potentially auto-create the repo during **Push/Sync**, or if fine-grained tokens aren’t an option.
+
+1. Go to https://github.com/settings/tokens
+2. **Tokens (classic)** → **Generate new token (classic)**
+3. Select scope: **`repo`**
+4. Copy the token immediately
+
+Then configure MAGNETO the same way in Obsidian settings.
+
+### Start syncing
+
+- Use the **ribbon icon** (git-branch icon) for quick sync
 - Or use the **Command Palette** (Ctrl/Cmd + P):
-  - `GitSync: Push to GitHub`
-  - `GitSync: Pull from GitHub`
-  - `GitSync: Sync with GitHub`
+  - `MAGNETO: Push to GitHub`
+  - `MAGNETO: Pull from GitHub`
+  - `MAGNETO: Sync with GitHub`
 - Or use the buttons in the settings tab
 
 ## Settings
@@ -66,8 +105,8 @@ Sync your Obsidian vault to a GitHub repository. **Works on both mobile and desk
 | Setting | Description |
 |---------|-------------|
 | **GitHub Username** | Your GitHub username |
-| **Personal Access Token** | GitHub token with `repo` scope |
-| **Repository Name** | Name of the repo (created if doesn't exist) |
+| **Personal Access Token** | Recommended: fine-grained token restricted to your repo (Contents RW + Metadata RO). Classic PAT with `repo` scope also works. |
+| **Repository Name** | Repo name only (fine-grained tokens require the repo to exist already) |
 | **Branch** | Git branch to use (default: `main`) |
 | **Auto Sync** | Enable automatic syncing |
 | **Auto Sync Interval** | How often to auto-sync (5-120 minutes) |
@@ -84,7 +123,7 @@ By default, these folders are excluded:
 
 ## How It Works
 
-This plugin uses the **GitHub REST API** to sync files. Unlike traditional Git sync plugins that require Git to be installed, GitSync:
+This plugin uses the **GitHub REST API** to sync files. Unlike traditional Git sync plugins that require Git to be installed, MAGNETO:
 
 1. Reads all files in your vault
 2. Uploads them to GitHub using the Git Data API (efficient batch uploads)
@@ -104,7 +143,9 @@ This makes it perfect for **Obsidian Mobile** where Git isn't available.
 
 ### "Connection failed"
 - Verify your GitHub username is correct
-- Ensure your token has the `repo` scope
+- Ensure your token has the right permissions:
+  - Fine-grained PAT: Contents RW + Metadata RO (and restricted to the correct repo)
+  - Classic PAT: `repo` scope
 - Check that the token hasn't expired
 
 ### Files not syncing
@@ -135,9 +176,9 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for detailed development guidelines.
 
 ## Support
 
-- 🐛 [Report a bug](https://github.com/vishal-go/obsidian-gitsync/issues/new?template=bug_report.md)
-- 💡 [Request a feature](https://github.com/vishal-go/obsidian-gitsync/issues/new?template=feature_request.md)
-- 📖 [Documentation](https://github.com/vishal-go/obsidian-gitsync#readme)
+- 🐛 [Report a bug](https://github.com/vishal-go/obsidian-magneto/issues/new?template=bug_report.md)
+- 💡 [Request a feature](https://github.com/vishal-go/obsidian-magneto/issues/new?template=feature_request.md)
+- 📖 [Documentation](https://github.com/vishal-go/obsidian-magneto#readme)
 
 ## Author
 

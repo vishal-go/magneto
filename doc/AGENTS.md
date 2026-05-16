@@ -1,8 +1,8 @@
-# GitSync - Development Guide
+# MAGNETO - Development Guide
 
 ## Project Overview
 
-GitSync is an Obsidian community plugin that syncs your vault to GitHub using the REST API. It works on both mobile and desktop without requiring Git to be installed.
+MAGNETO (plugin id: `magneto`) is an Obsidian community plugin that syncs your vault to GitHub using the REST API. It works on both mobile and desktop without requiring Git to be installed.
 
 - **Target**: Obsidian Community Plugin (TypeScript → bundled JavaScript)
 - **Entry point**: `src/main.ts` compiled to `main.js`
@@ -25,7 +25,7 @@ src/
 |--------|---------|
 | `main.ts` | Plugin lifecycle, ribbon icon, commands, auto-sync |
 | `settings.ts` | Settings tab with all configuration UI |
-| `types.ts` | `GitSyncSettings` interface, `DEFAULT_SETTINGS`, sync types |
+| `types.ts` | `magnetoSettings` interface, `DEFAULT_SETTINGS`, sync types |
 | `github-api.ts` | GitHub API calls: auth, files, commits, trees |
 | `sync-service.ts` | Orchestrates sync: file reading, exclusions, upload/download |
 
@@ -71,7 +71,7 @@ npm run lint         # Run ESLint
 ## Settings Structure
 
 ```typescript
-interface GitSyncSettings {
+interface magnetoSettings {
   githubUsername: string;
   githubToken: string;
   repositoryName: string;
@@ -99,7 +99,7 @@ interface GitSyncSettings {
 ```typescript
 // In main.ts onload()
 this.addCommand({
-  id: 'gitsync-new-feature',
+  id: 'magneto-new-feature',
   name: 'New feature description',
   callback: async () => {
     // Implementation
@@ -108,7 +108,7 @@ this.addCommand({
 ```
 
 ### New Setting
-1. Add property to `GitSyncSettings` in `types.ts`
+1. Add property to `magnetoSettings` in `types.ts`
 2. Add default value to `DEFAULT_SETTINGS`
 3. Add UI in `settings.ts` `display()` method
 

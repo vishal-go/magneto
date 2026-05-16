@@ -1,9 +1,9 @@
 import { Plugin, Notice } from 'obsidian';
-import { GitSyncSettings, DEFAULT_SETTINGS, GitSyncSettingTab } from './settings';
+import { magnetoSettings, DEFAULT_SETTINGS, magnetoSettingTab } from './settings';
 import { SyncService } from './sync-service';
 
-export default class GitSyncPlugin extends Plugin {
-	settings: GitSyncSettings;
+export default class magnetoPlugin extends Plugin {
+	settings: magnetoSettings;
 	syncService: SyncService;
 	private autoSyncIntervalId: number | null = null;
 
@@ -72,21 +72,21 @@ export default class GitSyncPlugin extends Plugin {
 		});
 
 		// Add settings tab
-		this.addSettingTab(new GitSyncSettingTab(this.app, this));
+		this.addSettingTab(new magnetoSettingTab(this.app, this));
 
 		// Setup auto sync if enabled
 		this.setupAutoSync();
 
-		console.debug('GitSync plugin loaded');
+		console.debug('MAGNETO plugin loaded');
 	}
 
 	onunload() {
 		this.clearAutoSync();
-		console.debug('GitSync plugin unloaded');
+		console.debug('MAGNETO plugin unloaded');
 	}
 
 	async loadSettings() {
-		this.settings = Object.assign({}, DEFAULT_SETTINGS, await this.loadData() as Partial<GitSyncSettings>);
+		this.settings = Object.assign({}, DEFAULT_SETTINGS, await this.loadData() as Partial<magnetoSettings>);
 	}
 
 	async saveSettings() {
@@ -105,7 +105,7 @@ export default class GitSyncPlugin extends Plugin {
 			
 			this.autoSyncIntervalId = window.setInterval(() => {
 				if (!this.syncService.isBusy()) {
-					console.debug('GitSync: Running auto-sync...');
+					console.debug('MAGNETO: Running auto-sync...');
 					void (async () => {
 						await this.syncService.sync();
 						this.settings.lastSyncTime = Date.now();

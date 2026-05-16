@@ -1,14 +1,14 @@
 import { App, PluginSettingTab, Setting, Notice } from 'obsidian';
-import GitSyncPlugin from './main';
-import { GitSyncSettings, DEFAULT_SETTINGS } from './types';
+import magnetoPlugin from './main';
+import { magnetoSettings, DEFAULT_SETTINGS } from './types';
 
-export type { GitSyncSettings };
+export type { magnetoSettings };
 export { DEFAULT_SETTINGS };
 
-export class GitSyncSettingTab extends PluginSettingTab {
-	plugin: GitSyncPlugin;
+export class magnetoSettingTab extends PluginSettingTab {
+	plugin: magnetoPlugin;
 
-	constructor(app: App, plugin: GitSyncPlugin) {
+	constructor(app: App, plugin: magnetoPlugin) {
 		super(app, plugin);
 		this.plugin = plugin;
 	}
@@ -19,7 +19,7 @@ export class GitSyncSettingTab extends PluginSettingTab {
 
 		new Setting(containerEl)
 			.setName('Configuration')
-			.setDesc('Sync your Obsidian vault to a GitHub repository. Works on mobile and desktop.')
+			.setDesc('Magneto — Markdown and Git notes export, track origin. Sync your Obsidian vault to GitHub (mobile + desktop, no Git required).')
 			.setHeading();
 
 		// GitHub Account Section
@@ -40,7 +40,7 @@ export class GitSyncSettingTab extends PluginSettingTab {
 
 		new Setting(containerEl)
 			.setName('Personal access token')
-			.setDesc('Create a token at GitHub settings. Required scopes: repo.')
+			.setDesc('Recommended: fine-grained token restricted to this repo. Permissions: contents (read/write) and metadata (read-only). A classic personal access token with the repo scope also works.')
 			.addText(text => {
 				text
 					.setPlaceholder('Token')
@@ -55,7 +55,7 @@ export class GitSyncSettingTab extends PluginSettingTab {
 
 		new Setting(containerEl)
 			.setName('Repository name')
-			.setDesc('The GitHub repository to sync to. Will be created if it doesn\'t exist.')
+			.setDesc('Repository name only (not owner/repo). If using a fine-grained token, create the repo first. A classic personal access token may allow auto-create during push/sync.')
 			.addText(text => text
 				.setPlaceholder('Repository')
 				.setValue(this.plugin.settings.repositoryName)
@@ -131,7 +131,7 @@ export class GitSyncSettingTab extends PluginSettingTab {
 			.setName('Commit message')
 			.setDesc('Commit message template. Use {{date}} for current date/time.')
 			.addText(text => text
-				.setPlaceholder('Obsidian sync: {{date}}')
+				.setPlaceholder('MAGNETO sync: {{date}}')
 				.setValue(this.plugin.settings.commitMessage)
 				.onChange(async (value) => {
 					this.plugin.settings.commitMessage = value || DEFAULT_SETTINGS.commitMessage;
@@ -186,7 +186,7 @@ export class GitSyncSettingTab extends PluginSettingTab {
 			.setName('Manual sync')
 			.setHeading();
 
-		const syncButtonsDiv = containerEl.createDiv({ cls: 'gitsync-buttons' });
+		const syncButtonsDiv = containerEl.createDiv({ cls: 'magneto-buttons' });
 
 		new Setting(syncButtonsDiv)
 			.setName('Push to GitHub')

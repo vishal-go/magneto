@@ -1,6 +1,6 @@
 # Changelog
 
-All notable changes to GitSync will be documented in this file.
+All notable changes to MAGNETO (plugin id: `magneto`) will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
@@ -16,9 +16,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Auto-sync with configurable interval (5-120 minutes)
 - Ribbon icon for quick sync access
 - Command palette commands:
-  - `GitSync: Push to GitHub`
-  - `GitSync: Pull from GitHub`
-  - `GitSync: Sync with GitHub`
+  - `MAGNETO: Push to GitHub`
+  - `MAGNETO: Pull from GitHub`
+  - `MAGNETO: Sync with GitHub`
 - Settings tab with full configuration:
   - GitHub username
   - Personal access token (masked input)
@@ -29,7 +29,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Excluded folders configuration
   - Excluded files configuration
 - Test connection button to verify credentials
-- Automatic private repository creation if it doesn't exist
+- Optional private repository auto-creation (when your token allows it)
 - Binary file support (images, PDFs, etc.)
 - Batch upload using Git Data API for efficiency
 - Mobile compatibility (iOS and Android)

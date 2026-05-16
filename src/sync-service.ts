@@ -1,20 +1,20 @@
 import { App, TFile, Notice, normalizePath } from 'obsidian';
 import { GitHubAPI } from './github-api';
-import { GitSyncSettings, SyncResult, GitHubFile } from './types';
+import { magnetoSettings, SyncResult, GitHubFile } from './types';
 
 export class SyncService {
 	private app: App;
-	private settings: GitSyncSettings;
+	private settings: magnetoSettings;
 	private api: GitHubAPI | null = null;
 	private isSyncing: boolean = false;
 
-	constructor(app: App, settings: GitSyncSettings) {
+	constructor(app: App, settings: magnetoSettings) {
 		this.app = app;
 		this.settings = settings;
 		this.initializeAPI();
 	}
 
-	updateSettings(settings: GitSyncSettings): void {
+	updateSettings(settings: magnetoSettings): void {
 		this.settings = settings;
 		this.initializeAPI();
 	}
@@ -175,7 +175,7 @@ export class SyncService {
 		this.isSyncing = true;
 
 		try {
-			new Notice('Pushing to GitHub.');
+			new Notice('Pushing to GitHub...');
 
 			// Ensure repository exists
 			const repoExists = await this.api.ensureRepository();
@@ -205,7 +205,7 @@ export class SyncService {
 			const success = await this.api.batchUpload(filesToUpload, this.getCommitMessage());
 
 			if (success) {
-				new Notice(`GitSync: Pushed ${filesToUpload.length} files to GitHub`);
+				new Notice(`Pushed ${filesToUpload.length} files to GitHub`);
 				return {
 					success: true,
 					message: `Successfully pushed ${filesToUpload.length} files`,
@@ -218,7 +218,7 @@ export class SyncService {
 			}
 		} catch (error) {
 			const message = error instanceof Error ? error.message : 'Unknown error';
-			new Notice(`GitSync: Push failed - ${message}`);
+			new Notice(`Push failed: ${message}`);
 			return { success: false, message, filesUploaded: 0, filesDownloaded: 0, filesDeleted: 0 };
 		} finally {
 			this.isSyncing = false;
@@ -240,7 +240,7 @@ export class SyncService {
 		this.isSyncing = true;
 
 		try {
-			new Notice('Pulling from GitHub.');
+			new Notice('Pulling from GitHub...');
 
 			// Get all files from GitHub
 			const remoteFiles = await this.api.getAllFiles();
@@ -273,7 +273,7 @@ export class SyncService {
 				}
 			}
 
-			new Notice(`GitSync: Pulled ${filesDownloaded} files from GitHub`);
+			new Notice(`Pulled ${filesDownloaded} files from GitHub`);
 			return {
 				success: true,
 				message: `Successfully pulled ${filesDownloaded} files`,
@@ -283,7 +283,7 @@ export class SyncService {
 			};
 		} catch (error) {
 			const message = error instanceof Error ? error.message : 'Unknown error';
-			new Notice(`GitSync: Pull failed - ${message}`);
+			new Notice(`Pull failed: ${message}`);
 			return { success: false, message, filesUploaded: 0, filesDownloaded: 0, filesDeleted: 0 };
 		} finally {
 			this.isSyncing = false;
@@ -305,7 +305,7 @@ export class SyncService {
 		this.isSyncing = true;
 
 		try {
-			new Notice('Starting sync.');
+			new Notice('Starting sync...');
 
 			// Ensure repository exists
 			const repoExists = await this.api.ensureRepository();
@@ -372,7 +372,7 @@ export class SyncService {
 				}
 			}
 
-			new Notice(`GitSync: Synced ${filesUploaded} up, ${filesDownloaded} down`);
+			new Notice(`Synced ${filesUploaded} up, ${filesDownloaded} down`);
 			return {
 				success: true,
 				message: `Sync complete: ${filesUploaded} uploaded, ${filesDownloaded} downloaded`,
@@ -382,7 +382,7 @@ export class SyncService {
 			};
 		} catch (error) {
 			const message = error instanceof Error ? error.message : 'Unknown error';
-			new Notice(`GitSync: Sync failed - ${message}`);
+			new Notice(`Sync failed: ${message}`);
 			return { success: false, message, filesUploaded: 0, filesDownloaded: 0, filesDeleted: 0 };
 		} finally {
 			this.isSyncing = false;

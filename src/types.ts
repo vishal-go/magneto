@@ -1,4 +1,4 @@
-export interface GitSyncSettings {
+export interface magnetoSettings {
 	githubUsername: string;
 	githubToken: string;
 	repositoryName: string;
@@ -11,7 +11,7 @@ export interface GitSyncSettings {
 	commitMessage: string;
 }
 
-export const DEFAULT_SETTINGS: GitSyncSettings = {
+export const DEFAULT_SETTINGS: magnetoSettings = {
 	githubUsername: '',
 	githubToken: '',
 	repositoryName: '',
@@ -21,7 +21,7 @@ export const DEFAULT_SETTINGS: GitSyncSettings = {
 	lastSyncTime: 0,
 	excludedFolders: ['{{configDir}}/plugins', '{{configDir}}/themes', '.trash'],
 	excludedFiles: ['.DS_Store', 'Thumbs.db'],
-	commitMessage: 'Obsidian sync: {{date}}'
+	commitMessage: 'MAGNETO sync: {{date}}'
 };
 
 export interface GitHubFile {

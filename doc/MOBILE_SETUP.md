@@ -1,6 +1,6 @@
-# GitSync on Mobile (Android & iOS) — Setup + Usage Guide
+# MAGNETO on Mobile (Android & iOS) — Setup + Usage Guide
 
-This guide explains how to install and use **GitSync** on **Obsidian Mobile**. GitSync works without Git by using the GitHub REST API.
+This guide explains how to install and use **MAGNETO** on **Obsidian Mobile**. MAGNETO works without Git by using the GitHub REST API.
 
 ## What you need
 
@@ -15,12 +15,12 @@ This guide explains how to install and use **GitSync** on **Obsidian Mobile**. G
   - Do **not** enter `username/my-obsidian-vault` in the “Repository name” field.
 - **Auto-sync only runs while Obsidian is open.** Mobile OSes pause background timers when apps are closed.
 - **Do not sync your Obsidian config folder to GitHub.**
-  - By default GitSync excludes `{{configDir}}/plugins` and `{{configDir}}/themes`.
+  - By default MAGNETO excludes `{{configDir}}/plugins` and `{{configDir}}/themes`.
   - Keep those exclusions. Your token is stored in the plugin’s data on-device; syncing `.obsidian/plugins` can accidentally publish secrets to GitHub.
 
 ---
 
-## Step 1 — Install GitSync on your phone
+## Step 1 — Install MAGNETO on your phone
 
 ### Option A (recommended): Install from Community Plugins
 
@@ -28,13 +28,13 @@ This guide explains how to install and use **GitSync** on **Obsidian Mobile**. G
 2. Go to **Settings → Community plugins**.
 3. Turn off **Restricted mode** (also called “Safe mode” in some versions).
 4. Tap **Browse**.
-5. Search for **GitSync**.
+5. Search for **MAGNETO**.
 6. Tap **Install**.
 7. Tap **Enable**.
 
-After enabling, you should see a GitSync entry under installed community plugins.
+After enabling, you should see a MAGNETO entry under installed community plugins.
 
-### Option B: Manual install (if GitSync does not appear in Browse)
+### Option B: Manual install (if MAGNETO does not appear in Browse)
 
 You need these 3 files from the latest release:
 
@@ -44,7 +44,7 @@ You need these 3 files from the latest release:
 
 Create this folder inside your vault:
 
-- `<YourVault>/.obsidian/plugins/gitsync/`
+- `<YourVault>/.obsidian/plugins/magneto/`
 
 Then copy the 3 files into that folder.
 
@@ -62,25 +62,18 @@ Then copy the 3 files into that folder.
 
 ## Step 2 — Create a GitHub Personal Access Token (PAT)
 
-GitSync uses a GitHub token to read/write your repository.
+Token generation is documented in one place:
 
-### Recommended (most compatible): Classic PAT
+- See **README → Setup**: [../README.md](../README.md#setup)
 
-1. Open GitHub in a browser.
-2. Go to **Settings → Developer settings → Personal access tokens → Tokens (classic)**.
-3. Select **Generate new token (classic)**.
-4. Give it a name, e.g. `Obsidian GitSync`.
-5. Select scope: **`repo`**.
-6. Generate and **copy the token**.
-
-Keep the token private. If it leaks, revoke it immediately in GitHub settings.
+Recommended: a fine-grained token restricted to your repo (Contents RW + Metadata RO).
 
 ---
 
-## Step 3 — Configure GitSync in Obsidian Mobile
+## Step 3 — Configure MAGNETO in Obsidian Mobile
 
 1. In Obsidian, open **Settings**.
-2. Go to **Community plugins → GitSync**.
+2. Go to **Community plugins → MAGNETO**.
 3. Fill in:
    - **GitHub username**: your GitHub username
    - **Personal access token**: paste your PAT
@@ -92,8 +85,8 @@ Keep the token private. If it leaks, revoke it immediately in GitHub settings.
 
 The **Test connection** button checks whether the repository already exists and is reachable.
 
-- If the repo does **not** exist yet: GitSync can still create it during **Push** or **Sync**, but **Test connection** may fail first.
-- Fix: set a repo name, then run **Push** once to create the repo, then re-test.
+- If you used a **fine-grained token**, the repo must already exist (create it first).
+- If you used a **classic PAT** and the repo does **not** exist yet, MAGNETO may create it during **Push** or **Sync**, but **Test connection** may fail until after that first push.
 
 ---
 
@@ -101,15 +94,15 @@ The **Test connection** button checks whether the repository already exists and 
 
 ### If this is your first device (you’re creating the GitHub repo)
 
-1. Configure GitSync (Step 3).
+1. Configure MAGNETO (Step 3).
 2. Use **Manual sync → Push to GitHub** (or **Full sync**).
 3. Wait for the notice confirming how many files were uploaded.
 
-This creates a private GitHub repository automatically if it doesn’t exist.
+If you’re using a classic PAT and the repo doesn’t exist, this may create a private GitHub repository automatically.
 
 ### If you’re setting up a second device (another phone/tablet/desktop)
 
-1. Install GitSync on the second device.
+1. Install MAGNETO on the second device.
 2. Configure it with the **same** username/repo/branch.
 3. Run **Pull from GitHub** first.
 4. After the pull completes, you can use **Full sync** going forward.
@@ -118,18 +111,18 @@ This creates a private GitHub repository automatically if it doesn’t exist.
 
 ## How to run sync on mobile (day-to-day)
 
-You can run GitSync in any of these ways:
+You can run MAGNETO in any of these ways:
 
 - Tap the **ribbon icon** (git-branch icon) to run “Sync with GitHub”.
 - Use **Command Palette** and run:
-  - `GitSync: Push to GitHub`
-  - `GitSync: Pull from GitHub`
-  - `GitSync: Sync with GitHub`
-- Open **Settings → Community plugins → GitSync → Manual sync** buttons.
+  - `MAGNETO: Push to GitHub`
+  - `MAGNETO: Pull from GitHub`
+  - `MAGNETO: Sync with GitHub`
+- Open **Settings → Community plugins → MAGNETO → Manual sync** buttons.
 
 ### Auto-sync on mobile
 
-1. Enable **Auto sync** in GitSync settings.
+1. Enable **Auto sync** in MAGNETO settings.
 2. Set an interval (5–120 minutes).
 
 Notes:
@@ -163,7 +156,9 @@ Default excluded files:
 ### “Connection failed” / 401 / 403
 
 - Confirm the token is correct and not expired.
-- Confirm token has **`repo`** scope (classic PAT).
+- Confirm token permissions match your token type (see [../README.md](../README.md#setup)):
+  - Fine-grained PAT: Contents RW + Metadata RO (and restricted to the correct repo)
+  - Classic PAT: `repo` scope
 - If your GitHub account has SSO/SAML enforced (common in organizations), you may need to authorize the token for your organization.
 
 ### 404 / “Not Found”
@@ -181,16 +176,16 @@ Default excluded files:
 ### I changed files on GitHub but they didn’t appear on my phone
 
 - Run **Pull from GitHub**.
-- Reminder: GitSync is designed to be **local-first** in practice; if the same path exists locally, your local copy may be uploaded again during sync.
+- Reminder: MAGNETO is designed to be **local-first** in practice; if the same path exists locally, your local copy may be uploaded again during sync.
   - Best practice: avoid editing the same note on two devices at the same time.
 
 ---
 
 ## Quick checklist (copy/paste)
 
-- [ ] Install GitSync (Community plugins)
-- [ ] Create GitHub PAT (classic, scope: `repo`)
+- [ ] Install MAGNETO (Community plugins)
+- [ ] Create GitHub token (see [../README.md](../README.md#setup))
 - [ ] Configure username/token/repo/branch
-- [ ] First device: Push or Sync to create repo
+- [ ] First device: Push or Sync (repo must exist if using fine-grained token)
 - [ ] Second device: Pull first, then Sync
 - [ ] Keep default exclusions for `{{configDir}}/plugins` to avoid leaking secrets

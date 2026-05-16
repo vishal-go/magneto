@@ -1,6 +1,6 @@
-# Contributing to GitSync
+# Contributing to MAGNETO
 
-Thank you for your interest in contributing to GitSync! This document provides guidelines for contributing to the project.
+Thank you for your interest in contributing to MAGNETO! This document provides guidelines for contributing to the project.
 
 ## Getting Started
 
@@ -14,8 +14,8 @@ Thank you for your interest in contributing to GitSync! This document provides g
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/vishal-go/obsidian-gitsync.git
-   cd obsidian-gitsync
+   git clone https://github.com/vishal-go/obsidian-magneto.git
+   cd obsidian-magneto
    ```
 
 2. Install dependencies:
@@ -29,7 +29,7 @@ Thank you for your interest in contributing to GitSync! This document provides g
    ```
 
 4. Link to your Obsidian vault for testing:
-   - Copy or symlink the plugin folder to `<YourVault>/.obsidian/plugins/gitsync/`
+   - Copy or symlink the plugin folder to `<YourVault>/.obsidian/plugins/magneto/`
    - Or develop directly in your vault's plugins folder
 
 5. Reload Obsidian and enable the plugin in **Settings → Community plugins**

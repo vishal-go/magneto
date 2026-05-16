@@ -1,16 +1,16 @@
-/* GitSync Plugin Styles */
+/* MAGNETO Plugin Styles */
 
-.gitsync-buttons .setting-item {
+.magneto-buttons .setting-item {
 	border-top: none;
 	padding-top: 8px;
 }
 
-.gitsync-buttons .setting-item:first-child {
+.magneto-buttons .setting-item:first-child {
 	padding-top: 0;
 }
 
 /* Status indicator styling */
-.gitsync-status {
+.magneto-status {
 	display: flex;
 	align-items: center;
 	gap: 6px;
@@ -20,20 +20,20 @@
 	margin-bottom: 12px;
 }
 
-.gitsync-status.syncing {
+.magneto-status.syncing {
 	background-color: var(--background-modifier-message);
 }
 
-.gitsync-status.success {
+.magneto-status.success {
 	background-color: var(--background-modifier-success);
 }
 
-.gitsync-status.error {
+.magneto-status.error {
 	background-color: var(--background-modifier-error);
 }
 
 /* Settings section headers */
-.gitsync-settings h2 {
+.magneto-settings h2 {
 	margin-top: 24px;
 	margin-bottom: 12px;
 	border-bottom: 1px solid var(--background-modifier-border);
@@ -41,6 +41,6 @@
 }
 
 /* Token input masking */
-.gitsync-token-input {
+.magneto-token-input {
 	font-family: monospace;
 }
